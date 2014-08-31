@@ -1,8 +1,17 @@
 function [R2, coefs, vals_m, age]= nc_ModelSelection(AFQpath, xlsPath, excludeSubs, valName, nodes, showFigs, agerange, bootIter, crossval, outfile,models)
 % Test different lifespan models
 %
-% [R2, coefs, mtv_m, age]= wmdevo_ModelSelection(AFQpath, xlsPath,...
-% excludeSubs, valName, nodes, showFigs)
+% [R2, coefs, vals_m, age]= nc_ModelSelection(AFQpath, xlsPath, ...
+%       excludeSubs, valName, nodes, showFigs, agerange, bootIter, ...
+%       crossval, outfile,models)
+%
+% This code will test a variety of different lifespan models on qMR
+% parameters saved in an AFQ structure. Model coefficients will be returned 
+% in a strucute that is used by subsequent functions to make figures.
+% Currently it is a bit unwealdy and essoteric to the specific analyses of 
+% the Nature Communications paper. But it is a good starting place and I 
+% will clean it up as time permits. It is mainly a wrapper function for
+% nc_CrossValidateModels
 %
 % example:
 %
@@ -11,6 +20,12 @@ function [R2, coefs, vals_m, age]= nc_ModelSelection(AFQpath, xlsPath, excludeSu
 % afqPath='/biac4/wandell/biac2/wandell2/data/WH/analysis/AFQ_Callosum_clip_0_02-Sep-2013.mat';
 % xlsPath='/biac4/wandell/biac2/wandell2/data/WH/Spreadsheets/Behavorial_Data/BehavioralData_08.19.13_JN.xls';
 % [R2, coefs, vals_m, age]= wmdevo_ModelSelection(afqPath, xlsPath, [71 79], 'R1_2DTI', 1:100, 1, [], 100, 1,['coefs' date])
+%
+%
+% Copyright Jason D. Yeatman, August 2014. Code released with:
+% Yeatman JD, Wandell BA & Mezer AM (2014). Lifespan maturation 
+% and degeneration of human brain white matter. Nature Communications.
+
 if notDefined('models')
     % These are the model types we'll try
     %models = {'linear' 'piecewise' 'piecewise2' 'quadratic' 'exp' 'lowess'};

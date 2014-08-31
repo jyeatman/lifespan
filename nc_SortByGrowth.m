@@ -27,7 +27,7 @@ function [fgnumsr1, fgnumsmd, fgnumsfa] = nc_SortByGrowth(coefsPath, fgnums)
 %% Load model fits
 if ~exist('coefsPath','var') || isempty(coefsPath)
     cd(nc_Path)
-    load coefs_10-Mar-2014.mat
+    load data/coefs_10-Mar-2014.mat
 else
     load(coefsPath)
 end

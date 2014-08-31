@@ -1,5 +1,47 @@
 function [R2, sqErr, yhat, coef] = nc_CrossValidateModels(y, x, model,crossvalidate,bootIter, params)
-% Calculate R2 using leave one out for a variety of models
+% Calculate R2 using leave one out cross validation for a variety of models
+%
+% [R2, sqErr, yhat, coef] = nc_CrossValidateModels(y, x, model,crossvalidate,bootIter, params)
+%
+% This function will fit and evaluate a number of different types of models 
+% using cross validation
+%
+% The following model classes have been implimented:
+% 'linear'          - Linear model
+% 'quadratic'       - Second order polynomial
+% 'piecewise'       - Piecewise linear model consisting of a line with a
+%                     slope joined to a flat line by a hinge
+% 'piecewise2'      - Piecewise linear model consisting of 2 lines with
+%                     independent slopes each connected by a flat line in 
+%                     the middle with 2 independent hinges
+% 'piecewisenoflat' - Same as piecewise but the second line has an
+%                     independent slope (rather than being flat)
+% 'piecewise2noflat'- Same as piecewise2 but the middle line also has a
+%                     slope
+% 'exponent'        - y = a*x^n + c
+% 'lowess'          - local regression model. Requires kendrick kays code.
+%                     See https://github.com/knk
+% 'poisson'         - A poisson curve
+%
+% Inputs:
+%
+% y             - vector of y values
+% x             - vector of x values
+% model         - string denoting model type (e.g., 'linear')
+% crossvalidate - estimate R2 using cross validation? (logical)
+% bootIter      - number of bootstrap iterations (scaler >=1)
+%
+% Outputs:
+%
+% R2    - Cross validated R2 (model accuracy)
+% sqErr - squared error
+% yhat  - model prediction
+% coef  - model coefficients
+%
+% Copyright Jason D. Yeatman, August 2014. Code released with:
+% Yeatman JD, Wandell BA & Mezer AM (2014). Lifespan maturation 
+% and degeneration of human brain white matter. Nature Communications
+
 
 %% Argument checking
 if notDefined('crossvalidate')

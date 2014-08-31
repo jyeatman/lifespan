@@ -12,7 +12,7 @@ function nc_Figure2
 % Load model fits
 if ~exist('coefsPath','var') || isempty(coefsPath)
     cd(nc_Path)
-    load coefs_10-Mar-2014.mat
+    load data/coefs_10-Mar-2014.mat
 else
     load(coefsPath)
 end
@@ -24,6 +24,6 @@ load exampleFibers.mat
 colors =AFQ_colormap('bgr',24);
 [fgnumsr1, fgnumsmd, fgnumsfa] = nc_SortByGrowth;
 
-nc_PlotModelFits(coefs{3}(1,:),'R1',fgNames,fgnumsr1,colors)
-set(gcf,'units','inches','position',[25 2 14 7],'paperpositionmode','auto')
-print(sprintf('-f%d',gcf),'-djpeg','-r300','Figure2_R1.png')
+nc_PlotModelFits(coefs{3}(1,:),'R1',fgNames,fgnumsr1,colors);
+set(gcf,'units','inches','position',[25 2 14 7],'paperpositionmode','auto');
+print(sprintf('-f%d',gcf),'-djpeg','-r300','Figure2_R1.png');
