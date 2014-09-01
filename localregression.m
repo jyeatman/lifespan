@@ -39,7 +39,8 @@ function f = localregression(x,y,x0,degree,kernel,h,mode)
 % plot(x0,localregression(x,y,x0,[],[],.5),'b-','LineWidth',3);
 % plot(x0,localregression(x,y,x0,[],[],2),'k-','LineWidth',3);
 %
-% Copyright Kendrick N. Kay, Washington University, 2014
+% Copyright Kendrick N. Kay, Washington University, 2014. 
+% See https://github.com/kendrickkay/knkutils
 
 % TODO: SHOULD WE PULL "WTS" FUNCTIONALITY FROM LOCALREGRESSION3.M?
   % SHOULD WE PULL OTHER CHANGES FROM LOCALREGRESSION3D AND LOCALREGRESSION4D ?
