@@ -1,7 +1,7 @@
-function [fgnumsr1, fgnumsmd, fgnumsfa] = nc_SortByGrowth(coefsPath, fgnums)
+function [fgnumsr1, fgnumsmd, fgnumsfa, vr1, vmd] = nc_SortByGrowth(coefsPath, fgnums)
 % Order fiber groups based on the amount of change
 %
-% [fgnumsr1, fgnumsmd, fgnumsfa] = nc_SortByGrowth(coefsPath, fgnums)
+% [fgnumsr1, fgnumsmd, fgnumsfa, vr1, vmd] = nc_SortByGrowth(coefsPath, fgnums)
 %
 % This function will calculate the amount of change in each qMR parameter 
 % (R1, MD, FA, etc.) between childhood and adulthood. The function operates
@@ -19,6 +19,8 @@ function [fgnumsr1, fgnumsmd, fgnumsfa] = nc_SortByGrowth(coefsPath, fgnums)
 % fgnumsr1  - Fiber group numbers ordered in terms of R1 growth
 % fgnumsmd  - Fiber group numbers ordered in terms of diffusivity (MD) growth
 % fgnumsfa  - Fiber group numbers ordered in terms of RFA growth
+% vr1       - The vertex of the R1 parabola
+% vmd       - The vertex of the MD parabola
 %
 % Copyright Jason D. Yeatman, August 2014. Code released with:
 % Yeatman JD, Wandell BA & Mezer AM (2014). Lifespan maturation 
@@ -42,11 +44,11 @@ end
 
 for ii = 1:max(fgnums)
     % vertex equation: x = -b/2a
-    v(ii) = -(coefs{3}(1,ii).full(2)./(2*coefs{3}(1,ii).full(1)));
+    vr1(ii) = -(coefs{3}(1,ii).full(2)./(2*coefs{3}(1,ii).full(1)));
     % Now for each of the fiber groups calculate the amount of change from age
     % 8 to vertex. The variable d will be the difference between the values
     % at these two ages
-    d(ii) = diff(polyval(coefs{3}(1,ii).full,[8 v(ii)]));
+    d(ii) = diff(polyval(coefs{3}(1,ii).full,[8 vr1(ii)]));
 end
 
 % Remove fiber groups that won't be analyzed

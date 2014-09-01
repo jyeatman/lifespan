@@ -1,7 +1,7 @@
-function nc_Figure2
+function nc_Figure2(coefsPath)
 % Code for Figure 2 in Yeatman et al. 2014
 %
-% nc_Figure2
+% nc_Figure2([coefsPath])
 %
 % This code will reproduce the montage of plots in Figure 2
 %
