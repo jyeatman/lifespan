@@ -87,11 +87,9 @@ for ii = 1:length(fgnumsr1)
     if ismember(ii,1:2:100)
         plot(1,n./2,'ks','markerfacecolor',colors(ii,:),'markersize',10);
         text(1.1,n./2,fgNames{fgnumsr1(ii)},'fontname','times');
-        text(.95,n./2,num2str(round(r2(ii))),'fontname','times','HorizontalAlignment','right')
     else
         plot(2.1,(n-1)./2,'ks','markerfacecolor',colors(ii,:),'markersize',10);
         text(2.2,(n-1)./2,fgNames{fgnumsr1(ii)},'fontname','times');
-        text(2.05,(n-1)./2,num2str(round(r2(ii))),'fontname','times','HorizontalAlignment','right')
     end
 end
 axis([.5 3 -5 20]);
