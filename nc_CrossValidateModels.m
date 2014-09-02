@@ -1,7 +1,7 @@
-function [R2, sqErr, yhat, coef] = nc_CrossValidateModels(y, x, model,crossvalidate,bootIter, params)
+function [R2, sqErr, yhat, coef] = nc_FitAndEvaluateModels(y, x, model,crossvalidate,bootIter, params)
 % Calculate R2 using leave one out cross validation for a variety of models
 %
-% [R2, sqErr, yhat, coef] = nc_CrossValidateModels(y, x, model,crossvalidate,bootIter, params)
+% [R2, sqErr, yhat, coef] = nc_FitAndEvaluateModels(y, x, model,crossvalidate,bootIter, params)
 %
 % This function will fit and evaluate a number of different types of models 
 % using cross validation
@@ -40,7 +40,7 @@ function [R2, sqErr, yhat, coef] = nc_CrossValidateModels(y, x, model,crossvalid
 %
 % Copyright Jason D. Yeatman, August 2014. Code released with:
 % Yeatman JD, Wandell BA & Mezer AM (2014). Lifespan maturation 
-% and degeneration of human brain white matter. Nature Communications
+% and degeneration of human brain white matter. Nature Communications.
 
 
 %% Argument checking
