@@ -7,7 +7,7 @@ Yeatman JD, Wandell BA & Mezer AM (2014). Lifespan maturation and degeneration o
 
 This is currently a work in progress and eventually there will be code to reproduce each figure and calculation in the manuscript. I am in the process of rewriting all the code to be generally clear and readable and will commit functions to the repository once I feel they are sufficiently documented.
 
-Some of this code relies on the AFQ (https://github.com/jyeatman/AFQ) and vistasoft (https://github.com/vistalab/vistasoft). For more information on the AFQ software see:
+Some of this code relies on AFQ (https://github.com/jyeatman/AFQ) and vistasoft (https://github.com/vistalab/vistasoft), and the MATLAB stats toolbox. For more information on the AFQ software see:
 
 Yeatman J.D., Dougherty R.F., Myall N.J., Wandell B.A., Feldman H.M.  (2012). Tract Profiles of White Matter Properties: Automating Fiber-Tract Quantification. PLoS One.
 

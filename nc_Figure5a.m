@@ -4,7 +4,8 @@ function nc_Figure5a(bsIter)
 % nc_Figure5a([bsIter])
 %
 % This function will reproduce Figure 5a showing that a parabola is a good
-% fit of the R1 lifespan data
+% fit of the R1 lifespan data and Figure 5b showing that R1 changes are
+% symmetric over the lifespan.
 %
 % Inputs:
 % 
@@ -17,7 +18,8 @@ function nc_Figure5a(bsIter)
 if ~exist('bsIter','var') || isempty(bsIter)
     bsIter = 500;
 end
-%% Figure 5 compare models
+
+%% Figure 5a compare data to parabola prediction
 
 % Get sorted fiber group numbers
 [fgnumsr1, fgnumsmd, fgnumsfa] = nc_SortByGrowth;
@@ -86,3 +88,81 @@ plot(x0,polyval(md_p,x0),'-','linewidth',3,'color',[0 0 0])
 plot(x0,evalPoissonCurve(md_pois,x0),'-','linewidth',3,'color',[.5 .5 .5])
 axis tight
 xlabel('Age');ylabel('Diffusivity (\mum^2/ms)');
+
+
+if ~exist('age_y','var') || isempty(age_y)
+    age_y = 10;
+end
+
+%% Figure 5b plot R1 at age 8 versus old age
+
+colors =AFQ_colormap('bgr',24);
+
+% R1 in the coeffs struct
+valnum = 3;
+
+% Find the vertex of the parabola fit to the measurements
+for ii = 1:max(fgnumsr1)
+    % equation: x = -b/2a
+    v(ii) = -(coefs{valnum}(1,ii).full(2)./(2*coefs{valnum}(1,ii).full(1)));
+    % Calculate symmetric location of age_y after the vertex
+    old_age(ii) = v(ii) + (v(ii)-age_y);
+end
+
+% Make a figure plotting R1 in childhood versus old age
+figure; hold('on')
+axis square
+axis([.85 1.1 .85 1.1])
+grid on
+
+% Add the identity line to the axis
+plot([.85 1.1],[.85 1.1],'-k')
+
+c = 0;
+for ii = fgnumsr1
+    c = c+1;
+    x0 = [age_y old_age(ii)];
+    bs = bootstrp(1000,@(x,y) localregression(x,y,x0,1,[],20), coefs{valnum}(3,ii).x,coefs{valnum}(3,ii).y);
+    x = prctile(bs(:,1),[16 50 84]);
+    y = prctile(bs(:,2),[16 50 84]);
+    plot(x([1 3]),[y(2) y(2)],'-','color',colors(c,:),'linewidth',2);
+    plot([x(2) x(2)],y([1 3]),'-','color',colors(c,:),'linewidth',2);
+    plot(x(2),y(2),'o','color',colors(c,:).*.6,'markerfacecolor',colors(c,:).*.6,'markersize',5)
+
+end
+xlabel(sprintf('R1 at age %d',age_y),'fontname','times')
+ylabel('R1 in senescence','fontname','times')
+set(gca,'fontname','times','xtick',.85:.05:1.1,'ytick',.85:.05:1.1)
+print(sprintf('-f%d',gcf),'-depsc2','-r300','R1Prediction_all')
+
+%% Plot diffusivity at age 8 versus old age (panel b Figure S4)
+% Note that diffusivity is assymetric while R1 is symmetric
+
+valnum = 2;
+% Find the vertex of the parabola fit to the measurements
+for ii = 1:max(fgnumsr1)
+    % equation: x = -b/2a
+    v(ii) = -(coefs{valnum}(1,ii).full(2)./(2*coefs{valnum}(1,ii).full(1)));
+    % Calculate symmetric location of age 8
+    old_age(ii) = v(ii) + (v(ii)-age_y);
+end
+figure; hold('on')
+axis square
+axis([.6 .8 .6 .8])
+plot([.6 .8],[.6 .8],'-k')
+grid on
+c = 0;
+for ii = fgnumsr1
+    c = c+1;
+    x0 = [age_y old_age(ii)];
+    bs = bootstrp(1000,@(x,y) localregression(x,y,x0,1,[],20), coefs{valnum}(3,ii).x,coefs{valnum}(3,ii).y);
+    x = prctile(bs(:,1),[16 50 84]);
+    y = prctile(bs(:,2),[16 50 84]);
+    plot(x([1 3]),[y(2) y(2)],'-','color',colors(c,:),'linewidth',2);
+    plot([x(2) x(2)],y([1 3]),'-','color',colors(c,:),'linewidth',2);
+    plot(x(2),y(2),'o','color',colors(c,:).*.6,'markerfacecolor',colors(c,:).*.6,'markersize',5)
+end
+xlabel(sprintf('Diffusivity at age %d',age_y),'fontname','times')
+ylabel('Diffusivity in senescence','fontname','times')
+set(gca,'fontname','times','xtick',.6:.05:.8,'ytick',.6:.05:.8)
+print(sprintf('-f%d',gcf),'-depsc2','-r300','MDPrediction_all')
