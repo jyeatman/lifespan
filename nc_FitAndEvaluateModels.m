@@ -21,7 +21,7 @@ function [R2, sqErr, yhat, coef] = nc_FitAndEvaluateModels(y, x, model,crossvali
 % 'exponent'        - y = a*x^n + c
 % 'lowess'          - local regression model. Requires kendrick kays code.
 %                     See https://github.com/knk
-% 'poisson'         - A poisson curve
+% 'poisson'         - A Poisson curve
 %
 % Inputs:
 %
