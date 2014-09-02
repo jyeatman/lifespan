@@ -1,5 +1,25 @@
 function nc_Figure4(age_y, coefsPath)
-% Figure 4 - Plots comparing R1 and MD - Multpe process hypothesis
+% Figure 4 - Plots comparing lifespan R1 and MD curves
+%
+% nc_Figure4(age_y, coefsPath)
+% 
+% Each qMRI parameter takes a unique lifespan trajectory due to the fact
+% that there are multple, independent biological processes driving changes
+% in the white matter. This function will reproduce the plots in Figure 4
+% showing that (a) R1 and diffusivity development rates are independent for
+% each tract, (b) mature R1 and diffusivity values reflect different
+% properties of the tissue and (c) on average the two parameters take
+% different lifespan trajectories (parabola vs. Poisson curve)
+%
+% Inputs
+%
+% age_y     - The age to use for childhood. The default is 10 years of age
+% coefsPath - Path to the model coefficients
+%
+%
+% Copyright Jason D. Yeatman, August 2014. Code released with:
+% Yeatman JD, Wandell BA & Mezer AM (2014). Lifespan maturation 
+% and degeneration of human brain white matter. Nature Communications.
 
 % Define the age to consider "childhood"
 if ~exist('age_y','var') || isempty(age_y)
@@ -87,4 +107,42 @@ ylabel('Mature diffusivity','fontname','times')
 set(gca,'fontname','times','xtick',.98:.04:1.14,'ytick',.6:.03:.8)
 print(sprintf('-f%d',gcf),'-depsc2','-r300','Mature_R1_MD')
 
-%% TODO Figure 4c
+%% Compare average R1 and diffusivity lifespan curves (Figure 4c)
+
+% Loop over fiber tracts and conglomerate data into 1 large vector for each
+% tissue property
+md_all=[]; r1_all=[]; age_md=[]; age_r1=[];
+for ii = fgnumsr1
+    
+    % Get mean values for this tract
+    md_ii = coefs{2}(1,ii).y;
+    r1_ii = coefs{3}(1,ii).y;
+    
+    % Grab age for each datapoint. There is really no reason we have to
+    % grab it from the coefs struct each time, but it seemed easier since a
+    % few subjects are missing measurements for a tract
+    age_md   = vertcat(age_md,coefs{2}(1,ii).x);
+    age_r1   = vertcat(age_r1,coefs{3}(1,ii).x);
+    
+    % concatenate values into 1 large vector
+    md_all = vertcat(md_all, md_ii);
+    r1_all = vertcat(r1_all, r1_ii);
+end
+
+% ages to calculate values
+x0 = 8:.1:74;
+
+% Fit local regression to all the data for all the tracts
+r1_curve = localregression(age_r1,r1_all,x0,1,[],25);
+md_curve = localregression(age_md,md_all,x0,1,[],25);
+
+% both on same axis
+figure; hold
+plot(x0,zscore(r1_curve),'-','linewidth',5,'color',[.7 .4 .4])
+plot(x0,zscore(-md_curve),'-','linewidth',5,'color',[.4 .4 .7])
+%plot(x0,zscore(tv_curve),'-','linewidth',5,'color',[.4 .7 .4])
+axis tight
+xlabel('Age');
+ylabel('Z score');
+grid
+
