@@ -66,6 +66,11 @@ fgnumsr1 = fgnums(r2i);
 for ii = 1:max(fgnums)
     % equation: x = -b/2a
     vmd(ii) = -(coefs{2}(1,ii).full(2)./(2*coefs{2}(1,ii).full(1)));
+    % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+    % To use the poisson curve instead you would use
+    % vmd(ii) = 1./coefs{2}(5,ii).full(2);
+    % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+    
     % Now for each of the fiber groups calculate the amount of change from age
     % 8 to vertex
     dmd(ii) = diff(polyval(coefs{2}(1,ii).full,[8 vmd(ii)]));
