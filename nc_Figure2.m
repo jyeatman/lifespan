@@ -18,7 +18,7 @@ else
 end
 
 % Load example fibers and fiber group names
-load exampleFibers.mat
+load(fullfile(nc_Path,'data','exampleSubject','exampleFibers.mat'));
 
 % Set the colors and fiber group order
 colors =AFQ_colormap('bgr',24);
